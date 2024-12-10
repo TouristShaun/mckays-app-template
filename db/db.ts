@@ -1,15 +1,23 @@
-import { profilesTable, todosTable } from "@/db/schema"
-import { config } from "dotenv"
 import { drizzle } from "drizzle-orm/postgres-js"
 import postgres from "postgres"
+import {
+  goalsTable,
+  subGoalsTable,
+  metapromptSessionsTable,
+  metapromptCommandsTable,
+  metapromptTmuxLogsTable,
+  resourcesTable
+} from "@/db/schema"
 
-config({ path: ".env.local" })
-
-const schema = {
-  profiles: profilesTable,
-  todos: todosTable
-}
-
-const client = postgres(process.env.DATABASE_URL!)
-
-export const db = drizzle(client, { schema })
+const connectionString = process.env.DATABASE_URL!
+const client = postgres(connectionString)
+export const db = drizzle(client, {
+  schema: {
+    goals: goalsTable,
+    subGoals: subGoalsTable,
+    metapromptSessions: metapromptSessionsTable,
+    metapromptCommands: metapromptCommandsTable,
+    metapromptTmuxLogs: metapromptTmuxLogsTable,
+    resources: resourcesTable
+  }
+})
